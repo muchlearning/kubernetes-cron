@@ -59,7 +59,7 @@ spec:
         role: worker
       containers:
         - name: cron
-          image: <registry>/cron:latest
+          image: muchlearning/kubernetes-cron:latest
           volumeMounts:
             - name: 15min
               mountPath: /etc/periodic/15min
