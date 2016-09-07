@@ -1,0 +1,6 @@
+# min	hour	day	month	weekday	command
+*/15	*	*	*	*	run-sh-parts /etc/periodic/15min
+0	*	*	*	*	run-sh-parts /etc/periodic/hourly
+0	2	*	*	*	run-sh-parts /etc/periodic/daily
+0	3	*	*	6	run-sh-parts /etc/periodic/weekly
+0	5	1	*	*	run-sh-parts /etc/periodic/monthly
