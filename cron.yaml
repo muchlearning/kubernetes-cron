@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cron-15min
+  namespace: kube-system
+data:
+  # add commands that you want to run periodically
+  echo: echo "This will run every 15 minutes"
+  echo2: echo "So will this"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cron-hourly
+  namespace: kube-system
+data:
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cron-daily
+  namespace: kube-system
+data:
+  acmetiny: kubectl exec `kubectl get pods --namespace=lb -l role=acme -o name | cut -d / -f 2` --namespace=lb ./renew domain
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cron-weekly
+  namespace: kube-system
+data:
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cron-monthly
+  namespace: kube-system
+data:
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cron
+  namespace: kube-system
+spec:
+  revisionHistoryLimit: 5
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: cron
+    spec:
+      nodeSelector:
+        role: worker
+      containers:
+        - name: cron
+          image: <registry>/cron:latest
+          volumeMounts:
+            - name: 15min
+              mountPath: /etc/periodic/15min
+              readOnly: true
+            - name: hourly
+              mountPath: /etc/periodic/hourly
+              readOnly: true
+            - name: daily
+              mountPath: /etc/periodic/daily
+              readOnly: true
+            - name: weekly
+              mountPath: /etc/periodic/weekly
+              readOnly: true
+            - name: monthly
+              mountPath: /etc/periodic/monthly
+              readOnly: true
+      volumes:
+        - name: 15min
+          configMap:
+            name: cron-15min
+        - name: hourly
+          configMap:
+            name: cron-hourly
+        - name: daily
+          configMap:
+            name: cron-daily
+        - name: weekly
+          configMap:
+            name: cron-weekly
+        - name: monthly
+          configMap:
+            name: cron-monthly
