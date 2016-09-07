@@ -1,5 +1,5 @@
 #!/bin/sh
 
 for x in $1/*; do
-    /bin/sh $x;
+    [ ! -f $x ] || /bin/sh $x;
 done
