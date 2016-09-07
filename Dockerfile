@@ -12,4 +12,4 @@ RUN apk add --update openssl ca-certificates \
 
 COPY run-sh-parts /usr/local/bin/
 COPY crontab /var/spool/cron/crontabs/root
-CMD ["/usr/local/bin/dumb-init", "-c", "/usr/sbin/crond", "-d", "2", "-f"]
+CMD ["/usr/local/bin/dumb-init", "-c", "/usr/sbin/crond", "-d", "7", "-f"]
